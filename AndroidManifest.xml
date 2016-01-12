@@ -27,13 +27,13 @@
             </intent-filter>
         </activity>
         
-        <receiver android:name=".MyReceiver">
+        <receiver android:name=".CallMusicReceiver">
 　　　　		<intent-filter>    
                 <action android:name="android.intent.action.PHONE_STATE"/>  
 　　　   		</intent-filter>
 　　		</receiver>
 
-        <service android:enabled="true" android:name=".SoundService" /> 
+        <service android:enabled="true" android:name=".CallMusicService" /> 
 
     </application>
 
