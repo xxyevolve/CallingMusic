@@ -1,12 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
     android:layout_width="fill_parent"  
     android:layout_height="fill_parent"  
-    android:orientation="vertical" > 
+     > 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
 
     <Button 
         android:id="@+id/start"
@@ -19,12 +15,25 @@
         android:id="@+id/stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:text="Stop" />
 
     <Button
-        android:id="@+id/setvolume"
+        android:id="@+id/setvolumeadd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="set volume" />
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="volume++" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/setvolumereduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/setvolumeadd"
+        android:layout_alignBottom="@+id/setvolumeadd"
+        android:layout_alignParentRight="true"
+        android:text="volume--" />
+
+</RelativeLayout>

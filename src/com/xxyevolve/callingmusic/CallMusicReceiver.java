@@ -7,8 +7,12 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+/**
+ * @author save
+ *主要为了监听通话中的各种事件
+ */
 public class CallMusicReceiver extends BroadcastReceiver {
-	private static final String TAG = "MyReceiver";
+	private static final String TAG = "CallMusicReceiver";
 	private Context mContext;
 	
 	@Override
@@ -25,7 +29,14 @@ public class CallMusicReceiver extends BroadcastReceiver {
 		}
 	
 	}
-	public void playingwithService(int order){
+	
+	
+	/** 
+	* @Description: TODO 发送不同的状态给CallMusicService 
+	* @param @param order  (int)
+	* @return void 
+	*/
+	private void playingwithService(int order){
         Intent intent = new Intent(mContext,CallMusicService.class);
         Bundle bundle = new Bundle();
         bundle.putInt("msg", order);
