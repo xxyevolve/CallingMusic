@@ -11,14 +11,18 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/>
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:name="com.xxyevolve.callingmusic.dao.BelmotPlayer"
+        >
+        <activity android:name=".activity.LocalMusicListActivity" />
+        <activity android:name=".activity.PlayerActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.xxyevolve.callingmusic.activity.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

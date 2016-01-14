@@ -1,5 +1,7 @@
 package com.xxyevolve.callingmusic;
 
+import com.xxyevolve.callingmusic.utils.CallMusicConfig;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,11 +23,11 @@ public class CallMusicReceiver extends BroadcastReceiver {
 		String phoneState = intent.getStringExtra(TelephonyManager.EXTRA_STATE);
 		if(phoneState.equals(TelephonyManager.EXTRA_STATE_OFFHOOK)){
 			Log.i("TAG","接通");
-			playingwithService(Config.PLAY_MUSIC);
+			playingwithService(CallMusicConfig.PLAY_MUSIC);
 		}
 		if(phoneState.equals(TelephonyManager.EXTRA_STATE_IDLE)){
 			Log.i("TAG","挂断");
-			playingwithService(Config.STOP_MUSIC);
+			playingwithService(CallMusicConfig.STOP_MUSIC);
 		}
 	
 	}

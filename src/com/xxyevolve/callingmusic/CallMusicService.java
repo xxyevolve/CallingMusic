@@ -2,6 +2,9 @@ package com.xxyevolve.callingmusic;
 
 import java.io.IOException;
 
+import com.xxyevolve.callingmusic.dao.BelmotPlayer;
+import com.xxyevolve.callingmusic.utils.CallMusicConfig;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,19 +19,25 @@ import android.util.Log;
  *处理从其他地方发来的状态信息，主要功能是播放音乐
  */
 public class CallMusicService extends Service {
-	private MediaPlayer mMediaPlay;
+	private BelmotPlayer belmotPlayer;
 	private Context  mContext;
 	private AudioManager mAudioManager;
 	private final String  TAG= "soundserver";
 	private int maxVolume;
-	private boolean isServerOpen = true; //是否开启服务的开关
+	private static boolean isServerOpen = true; //是否开启服务的开关
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		mContext = this;
+		initApplication();
 	}
 
+	private void initApplication() {
+		if (null == belmotPlayer) {
+			belmotPlayer = BelmotPlayer.getInstance();
+		}
+	}
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -41,55 +50,28 @@ public class CallMusicService extends Service {
 		int msg = bundle.getInt("msg");
 		Log.i("TAG","play music :"+msg);
 		switch (msg) {
-		case Config.PLAY_MUSIC:
+		case CallMusicConfig.PLAY_MUSIC:
 			startMusic();
 			break;
-		case Config.STOP_MUSIC:
+		case CallMusicConfig.STOP_MUSIC:
 			stopMusic();
 			break;
-		case Config.START_MUSIC_SERVER:
+		case CallMusicConfig.START_MUSIC_SERVER:
 			startServer();
 			break;
-		case Config.STOP_MUSIC_SERVER:
+		case CallMusicConfig.STOP_MUSIC_SERVER:
 			stopServer();
 			break;
-		case Config.SET_VOLUME_ADD:
+		case CallMusicConfig.SET_VOLUME_ADD:
 			setVoice(1);
 			break;
-		case Config.SET_VOLUME_REDUCE:
+		case CallMusicConfig.SET_VOLUME_REDUCE:
 			setVoice(-1);
 		default:
 			break;
 		}
 		return super.onStartCommand(intent, flags, startId);
 	}
-
-	
-	
-	/** 
-	* @Description: 初始化MediaPlay 
-	* @param   
-	* @return void 
-	*/
-	private void prepareMusic() {
-		if(mMediaPlay == null){
-			mMediaPlay = MediaPlayer.create(this, R.raw.chuanqi);
-			mMediaPlay.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mMediaPlay.setLooping(true); 
-	        mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-	        maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-	        Log.i("TAG","I am  prepareMusic");
-		}else{
-			try {
-				mMediaPlay.prepare();
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	
 	/** 
 	* @Description: 开启服务
@@ -107,12 +89,32 @@ public class CallMusicService extends Service {
 	* @return void 
 	*/
 	private void stopServer(){
-		if (mMediaPlay != null ) {
-			mMediaPlay.release();
+		if (belmotPlayer != null ) {
+			belmotPlayer.getPlayerEngine().stop();
 			Log.i("TAG","I am  stopServer");
 		}
 		isServerOpen = false;
 		stopSelf();
+	}
+	
+	private void play(String path) {
+		if (belmotPlayer.getPlayerEngine().isPlaying()
+				&& belmotPlayer.getPlayerEngine().getPlayingPath().equals(path)) {
+			belmotPlayer.getPlayerEngine().pause();
+		} else if (belmotPlayer.getPlayerEngine().isPause()
+				&& belmotPlayer.getPlayerEngine().getPlayingPath().equals(path)) {
+			belmotPlayer.getPlayerEngine().reset();
+			belmotPlayer.getPlayerEngine().setPlayingPath(path);
+			belmotPlayer.getPlayerEngine().play();
+		} else {
+			if (belmotPlayer.getPlayerEngine().isPlaying()
+					|| belmotPlayer.getPlayerEngine().isPause()) {
+				belmotPlayer.getPlayerEngine().reset();
+			}
+			belmotPlayer.getPlayerEngine().setPlayingPath(path);
+			belmotPlayer.getPlayerEngine().play();
+		}
+
 	}
 	
 	/** 
@@ -122,11 +124,12 @@ public class CallMusicService extends Service {
 	*/
 	private void startMusic() {
 		if(isServerOpen){
-			prepareMusic();
-			if (!mMediaPlay.isPlaying()) {
-				mMediaPlay.start();
-				Log.i("TAG","I am  startMusic");
-			}
+			play(CallMusicConfig.MUSIC_PATH);
+//			prepareMusic();
+//			if (!mMediaPlay.isPlaying()) {
+//				mMediaPlay.start();
+//				Log.i("TAG","I am  startMusic");
+//			}
 		}
 		
 	}
@@ -138,10 +141,13 @@ public class CallMusicService extends Service {
 	* @return void 
 	*/
 	private void stopMusic() {
-		if (mMediaPlay != null && mMediaPlay.isPlaying()) {
-			mMediaPlay.stop();
-			Log.i("TAG","I am  stopMusic");
+		if(belmotPlayer != null && belmotPlayer.getPlayerEngine().isPlaying()){
+			belmotPlayer.getPlayerEngine().pause();
 		}
+//		if (mMediaPlay != null && mMediaPlay.isPlaying()) {
+//			mMediaPlay.stop();
+//			Log.i("TAG","I am  stopMusic");
+//		}
 		
 	}
 	
@@ -154,8 +160,8 @@ public class CallMusicService extends Service {
 	private void setVoice(int volume ){
 		Log.i("TAG","maxVolume :"+(float)(maxVolume));
 		maxVolume = maxVolume+volume;
-		if (mMediaPlay != null ) {
-			mMediaPlay.setVolume((float)(maxVolume),(float) (maxVolume));
+		if (belmotPlayer != null ) {
+//			belmotPlayer.setVolume((float)(maxVolume),(float) (maxVolume));
 			Log.i("TAG","I am  setVoice");
 		}
 		
