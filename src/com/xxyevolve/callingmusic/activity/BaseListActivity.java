@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.xxyevolve.callingmusic.dao.BaseDomain;
-import com.xxyevolve.callingmusic.dao.ContentValuesBuilder;
+import com.xxyevolve.callingmusic.builder.ContentValuesBuilder;
+import com.xxyevolve.callingmusic.utils.BaseDomain;
 
 import android.app.ListActivity;
 import android.content.ContentValues;

@@ -1,5 +1,6 @@
 package com.xxyevolve.callingmusic;
 
+import java.io.FileDescriptor;
 import java.io.IOException;
 
 import com.xxyevolve.callingmusic.dao.BelmotPlayer;
@@ -8,6 +9,7 @@ import com.xxyevolve.callingmusic.utils.CallMusicConfig;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -116,6 +118,25 @@ public class CallMusicService extends Service {
 		}
 
 	}
+	private void play(FileDescriptor path) {
+		if (belmotPlayer.getPlayerEngine().isPlaying()
+				&& belmotPlayer.getPlayerEngine().getPlayingPath().equals(path)) {
+			belmotPlayer.getPlayerEngine().pause();
+		} else if (belmotPlayer.getPlayerEngine().isPause()
+				&& belmotPlayer.getPlayerEngine().getPlayingPath().equals(path)) {
+			belmotPlayer.getPlayerEngine().reset();
+			belmotPlayer.getPlayerEngine().setPlayingPath(path);
+			belmotPlayer.getPlayerEngine().play(path);
+		} else {
+			if (belmotPlayer.getPlayerEngine().isPlaying()
+					|| belmotPlayer.getPlayerEngine().isPause()) {
+				belmotPlayer.getPlayerEngine().reset();
+			}
+			belmotPlayer.getPlayerEngine().setPlayingPath(path);
+			belmotPlayer.getPlayerEngine().play(path);
+		}
+
+	}
 	
 	/** 
 	* @Description: TODO 开始播放音乐
@@ -124,7 +145,19 @@ public class CallMusicService extends Service {
 	*/
 	private void startMusic() {
 		if(isServerOpen){
-			play(CallMusicConfig.MUSIC_PATH);
+			if(null != CallMusicConfig.MUSIC_PATH)
+					play(CallMusicConfig.MUSIC_PATH);
+			else{
+				try {
+					String[] str = getResources().getAssets().list("");
+					Log.i(TAG,"path --->"+str[0]);
+					 AssetFileDescriptor afd = getAssets().openFd(str[0]);
+					play(afd.getFileDescriptor());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}
 //			prepareMusic();
 //			if (!mMediaPlay.isPlaying()) {
 //				mMediaPlay.start();

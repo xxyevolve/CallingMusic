@@ -2,7 +2,7 @@ package com.xxyevolve.callingmusic.activity;
 
 import com.xxyevolve.callingmusic.R;
 import com.xxyevolve.callingmusic.dao.BelmotPlayer;
-import com.xxyevolve.callingmusic.dao.PlayerEngineImpl.PlaybackMode;
+import com.xxyevolve.callingmusic.impl.PlayerEngineImpl.PlaybackMode;
 import com.xxyevolve.callingmusic.utils.Constants;
 
 import android.app.Activity;

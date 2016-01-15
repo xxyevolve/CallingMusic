@@ -1,8 +1,9 @@
 package com.xxyevolve.callingmusic.dao;
 
+import java.io.FileDescriptor;
 import java.util.List;
 
-import com.xxyevolve.callingmusic.dao.PlayerEngineImpl.PlaybackMode;
+import com.xxyevolve.callingmusic.impl.PlayerEngineImpl.PlaybackMode;
 
 
 import android.media.MediaPlayer.OnCompletionListener;
@@ -10,6 +11,8 @@ import android.media.MediaPlayer.OnCompletionListener;
 public interface IPlayerEngine {
 
 	void play();
+
+	void play(FileDescriptor fDPath);
 
 	void reset();
 
@@ -34,6 +37,8 @@ public interface IPlayerEngine {
 	String getPlayingPath();
 
 	void setPlayingPath(String path);
+	
+	void setPlayingPath(FileDescriptor path);
 
 	void setMediaPathList(List<String> pathList);
 

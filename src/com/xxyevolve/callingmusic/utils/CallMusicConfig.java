@@ -14,5 +14,5 @@ public class CallMusicConfig {
 	public static final int SET_VOLUME_ADD = 0X005;//改变音量增加音量+
 	public static final int SET_VOLUME_REDUCE = 0X006;//改变音量减少音量-
 	
-	public static String MUSIC_PATH ="";
+	public static String MUSIC_PATH =null;
 }

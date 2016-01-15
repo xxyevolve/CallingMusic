@@ -2,6 +2,10 @@ package com.xxyevolve.callingmusic.dao;
 
 import java.util.Date;
 
+import com.xxyevolve.callingmusic.utils.BaseDomain;
+import com.xxyevolve.callingmusic.utils.Column;
+import com.xxyevolve.callingmusic.utils.Table;
+
 
 @Table(name = DataBaseHelper.PLAYLIST_TABLE_NAME)
 public class Playlist extends BaseDomain {

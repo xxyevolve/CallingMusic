@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.xxyevolve.callingmusic.R;
-import com.xxyevolve.callingmusic.dao.Audio;
 import com.xxyevolve.callingmusic.dao.AudioDao;
-import com.xxyevolve.callingmusic.dao.AudioDaoImpl;
 import com.xxyevolve.callingmusic.dao.MusicListAdapter;
+import com.xxyevolve.callingmusic.impl.AudioDaoImpl;
+import com.xxyevolve.callingmusic.utils.Audio;
 import com.xxyevolve.callingmusic.utils.Constants;
 
 import android.app.TabActivity;
