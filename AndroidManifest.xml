@@ -36,7 +36,7 @@
 　　		</receiver>
 
         <service android:enabled="true" android:name=".CallMusicService" /> 
-
+ <service android:enabled="true" android:name=".CallMusicService" />  <service android:enabled="true" android:name=".CallMusicService" /> 
     </application>
 
 </manifest>
